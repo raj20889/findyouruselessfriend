@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 const Header = () => {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
   const pathname = usePathname();
   const [logoClicks, setLogoClicks] = useState(0);
   const [isFactOpen, setIsFactOpen] = useState(false);
@@ -36,11 +36,6 @@ const Header = () => {
       <header className="sticky top-0 z-40 w-full bg-background/60 backdrop-blur-lg border-b">
         <div className="container mx-auto flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center gap-2" onClick={handleLogoClick}>
-            {theme === "girl" ? (
-              <Sun className="h-8 w-8 text-primary animate-spin-slow" />
-            ) : (
-              <Moon className="h-8 w-8 text-primary animate-spin-slow" />
-            )}
             <span className="text-xl font-bold tracking-tighter">UselessFriend</span>
           </Link>
           <nav className="flex items-center gap-2 rounded-full border bg-muted/50 p-1">
