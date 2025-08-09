@@ -47,13 +47,19 @@ const Header = () => {
             {navItems.map((item) => {
               const isActive = item.href === "/" ? pathname === "/" && theme === item.theme : pathname === item.href;
               
+              const handleClick = () => {
+                if (item.theme) {
+                  setTheme(item.theme as "boy" | "girl")
+                }
+              };
+
               return (
                 <Button
                   key={item.name}
                   variant={isActive ? "default" : "ghost"}
                   size="sm"
                   asChild
-                  onClick={() => item.theme && setTheme(item.theme as "boy" | "girl")}
+                  onClick={handleClick}
                   className="rounded-full transition-all duration-300"
                 >
                   <Link href={item.href}>
