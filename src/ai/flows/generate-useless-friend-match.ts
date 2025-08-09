@@ -27,6 +27,9 @@ const GenerateUselessFriendMatchInputSchema = z.object({
     .describe(
       "A photo of the third person, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
+  scenario: z
+    .enum(['girls-seeking-boy', 'boys-seeking-girl'])
+    .describe('The context for the match. Determines who is the third wheel.'),
 });
 export type GenerateUselessFriendMatchInput = z.infer<typeof GenerateUselessFriendMatchInputSchema>;
 
@@ -61,8 +64,23 @@ Image 2: {{media url=image2DataUri}}
 Image 3: {{media url=image3DataUri}}
 
 Your tasks:
-1.  **Identify the Useless Friend:** Pick one person (1, 2, or 3) who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes. Provide a funny, one-sentence reason for your choice.
-2.  **Identify the Beautiful Couple:** From the three people, pick the two who you think look the most beautiful or cutest together. Provide a short, sweet, and slightly funny reason for your choice.
+1.  **Identify the Useless Friend:**
+    {{#if (eq scenario "girls-seeking-boy")}}
+    From Image 1 and Image 2 (the two girls), pick one person who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes.
+    {{/if}}
+    {{#if (eq scenario "boys-seeking-girl")}}
+    From Image 1 and Image 2 (the two boys), pick one person who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes.
+    {{/if}}
+    Provide a funny, one-sentence reason for your choice. The index for the useless friend must be 1 or 2.
+
+2.  **Identify the Beautiful Couple:**
+    {{#if (eq scenario "girls-seeking-boy")}}
+    The beautiful couple will be the remaining girl (from Image 1 or 2) and the guy (Image 3).
+    {{/if}}
+    {{#if (eq scenario "boys-seeking-girl")}}
+    The beautiful couple will be the remaining boy (from Image 1 or 2) and the girl (Image 3).
+    {{/if}}
+    Provide a short, sweet, and slightly funny reason for your choice.
 
 Return the results in the specified JSON format.`,
 });

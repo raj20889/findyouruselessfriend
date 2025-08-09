@@ -96,6 +96,7 @@ export default function GirlsPage() {
         image1DataUri,
         image2DataUri,
         image3DataUri,
+        scenario: 'girls-seeking-boy'
       });
 
       if (response.success && response.data) {
