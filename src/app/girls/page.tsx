@@ -6,7 +6,7 @@ import { Sparkles, Upload, Users, Dices, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useTheme } from "@/contexts/theme-provider";
-import { getUselessFriendMatch } from "./actions";
+import { getUselessFriendMatch } from "../actions";
 import type { GenerateUselessFriendMatchOutput } from "@/ai/flows/generate-useless-friend-match";
 import { useToast } from "@/hooks/use-toast";
 import { MatchResultCard } from "@/components/match-result-card";
@@ -14,7 +14,7 @@ import { loadingJokes } from "@/lib/data";
 
 type FileValue = { file: File | null; preview: string | null };
 
-export default function HomePage() {
+export default function GirlsPage() {
   const { setTheme } = useTheme();
   const [files, setFiles] = useState<{ [key: string]: FileValue }>({
     file1: { file: null, preview: null },
@@ -27,7 +27,7 @@ export default function HomePage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    setTheme("boy");
+    setTheme("girl");
   }, [setTheme]);
   
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function HomePage() {
   const isFormComplete = useMemo(() => {
     return Object.values(files).every((f) => f.file);
   }, [files]);
-  
+
   const filePreviews = useMemo(() => {
     return [files.file1.preview, files.file2.preview, files.file3.preview];
   }, [files]);
@@ -76,7 +76,7 @@ export default function HomePage() {
     if (!isFormComplete) {
       toast({
         title: "Missing Photos!",
-        description: "Please upload all three photos to get the analysis.",
+        description: "Please upload all three photos to find your useless friend.",
         variant: "destructive",
       });
       return;
@@ -96,7 +96,7 @@ export default function HomePage() {
         image1DataUri,
         image2DataUri,
         image3DataUri,
-        scenario: 'boys-seeking-girl'
+        scenario: 'girls-seeking-boy'
       });
 
       if (response.success && response.data) {
@@ -115,7 +115,7 @@ export default function HomePage() {
       setIsLoading(false);
     }
   };
-
+  
   const resetForm = () => {
     setResult(null);
     setFiles({
@@ -129,7 +129,7 @@ export default function HomePage() {
     return (
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
         <Dices className="h-16 w-16 animate-spin text-primary" />
-        <h2 className="mt-4 text-2xl font-bold">Analyzing the Squad...</h2>
+        <h2 className="mt-4 text-2xl font-bold">Analyzing Uselessness...</h2>
         <p className="mt-2 text-lg text-muted-foreground animate-pulse">{loadingJoke}</p>
       </div>
     );
@@ -143,6 +143,7 @@ export default function HomePage() {
     )
   }
 
+
   return (
     <div className="container mx-auto flex flex-col items-center p-4 text-center">
       <div className="mt-8">
@@ -150,7 +151,7 @@ export default function HomePage() {
           Useless Friend & Couple Finder
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Assemble the squad. Get one useless friend and one cute couple. Trust us bro.
+          Upload three photos. Get one useless friend and one cute couple. Science! 😂
         </p>
       </div>
 
@@ -159,7 +160,7 @@ export default function HomePage() {
           <CardContent className="p-0">
              <div className="flex flex-col items-center gap-2 mb-8">
               <Sparkles className="text-accent" />
-              <h3 className="text-xl font-semibold">The Boys Are Back In Town!</h3>
+              <h3 className="text-xl font-semibold">It's Girls' Time to Shine!</h3>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -183,7 +184,7 @@ export default function HomePage() {
                           <span className="font-semibold">Upload Photo {index + 1}</span>
                         </p>
                         <p className="text-xs text-muted-foreground/80 px-1">
-                          {index < 2 ? `You or a bro` : `A potential girl friend`}
+                          {index < 2 ? `You or a friend` : `A potential guy friend`}
                         </p>
                       </div>
                     )}

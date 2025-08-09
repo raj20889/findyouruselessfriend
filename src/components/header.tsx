@@ -7,7 +7,6 @@ import { Heart, Bot, BarChart, Ghost } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/theme-provider";
 import { UselessFactDialog } from "./useless-fact-dialog";
-import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 const Header = () => {
@@ -23,11 +22,12 @@ const Header = () => {
       setIsFactOpen(true);
       setLogoClicks(0);
     }
+    setTheme("boy");
   };
 
   const navItems = [
-    { name: "Girls", theme: "girl", icon: <Heart className="h-4 w-4" />, href: "/" },
-    { name: "Boys", theme: "boy", icon: <Bot className="h-4 w-4" />, href: "/boys" },
+    { name: "Boys", theme: "boy", icon: <Bot className="h-4 w-4" />, href: "/" },
+    { name: "Girls", theme: "girl", icon: <Heart className="h-4 w-4" />, href: "/girls" },
     { name: "Matches", href: "/matches", icon: <BarChart className="h-4 w-4" /> },
   ];
 
