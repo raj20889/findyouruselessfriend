@@ -146,7 +146,7 @@ export default function HomePage() {
   return (
     <div className="container mx-auto flex flex-col items-center p-4 text-center">
       <div className="mt-8">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-primary">
           Useless Friend & Couple Finder
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">

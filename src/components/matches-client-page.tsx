@@ -36,7 +36,7 @@ export function MatchesClientPage({ counts }: MatchesClientPageProps) {
   return (
     <div className="container mx-auto p-4 md:p-8 animate-in fade-in-50 duration-500">
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-primary">
           Useless Analytics
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
