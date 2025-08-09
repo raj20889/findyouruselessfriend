@@ -110,6 +110,15 @@ export default function GirlsPage() {
       setIsLoading(false);
     }
   };
+  
+  const resetForm = () => {
+    setResult(null);
+    setFiles({
+      file1: { file: null, preview: null },
+      file2: { file: null, preview: null },
+      file3: { file: null, preview: null },
+    });
+  }
 
   if (isLoading) {
     return (
@@ -117,21 +126,6 @@ export default function GirlsPage() {
         <Dices className="h-16 w-16 animate-spin text-primary" />
         <h2 className="mt-4 text-2xl font-bold">Analyzing Uselessness...</h2>
         <p className="mt-2 text-lg text-muted-foreground animate-pulse">{loadingJoke}</p>
-      </div>
-    );
-  }
-
-  if (result) {
-    return (
-      <div className="container mx-auto flex flex-col items-center justify-center p-4 text-center min-h-[calc(100vh-80px)]">
-        <MatchResultCard result={result} onReset={() => {
-          setResult(null);
-          setFiles({
-            file1: { file: null, preview: null },
-            file2: { file: null, preview: null },
-            file3: { file: null, preview: null },
-          });
-        }} />
       </div>
     );
   }
@@ -147,67 +141,80 @@ export default function GirlsPage() {
         </p>
       </div>
 
-      <Card className="mt-8 w-full max-w-4xl p-6 bg-card/70 backdrop-blur-lg shadow-2xl border-primary/20">
-        <CardContent className="p-0">
-           <div className="flex flex-col items-center gap-2 mb-8">
-            <Sparkles className="text-accent" />
-            <h3 className="text-xl font-semibold">It's Girls' Time to Shine!</h3>
-          </div>
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl">
+        <Card className="w-full p-6 bg-card/70 backdrop-blur-lg shadow-2xl border-primary/20">
+          <CardContent className="p-0">
+             <div className="flex flex-col items-center gap-2 mb-8">
+              <Sparkles className="text-accent" />
+              <h3 className="text-xl font-semibold">It's Girls' Time to Shine!</h3>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {Object.keys(files).map((key, index) => (
-              <div key={key} className="relative aspect-square">
-                <label
-                  htmlFor={key}
-                  className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-muted-foreground/50 rounded-lg cursor-pointer bg-muted/30 hover:bg-muted/50 transition-colors"
-                >
-                  {files[key].preview ? (
-                    <Image
-                      src={files[key].preview!}
-                      alt={`Preview ${index + 1}`}
-                      layout="fill"
-                      objectFit="cover"
-                      className="rounded-lg"
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {Object.keys(files).map((key, index) => (
+                <div key={key} className="relative aspect-square">
+                  <label
+                    htmlFor={key}
+                    className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-muted-foreground/50 rounded-lg cursor-pointer bg-muted/30 hover:bg-muted/50 transition-colors"
+                  >
+                    {files[key].preview ? (
+                      <Image
+                        src={files[key].preview!}
+                        alt={`Preview ${index + 1}`}
+                        fill
+                        className="rounded-lg object-cover"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <Upload className="w-8 h-8 mb-4 text-muted-foreground" />
+                        <p className="mb-2 text-sm text-muted-foreground">
+                          <span className="font-semibold">Click to upload</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground/80 px-1">
+                          {index < 2 ? `Photo of you or a friend` : `Photo of a potential guy friend`}
+                        </p>
+                      </div>
+                    )}
+                    <input
+                      id={key}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => handleFileChange(e, key)}
+                      disabled={isLoading}
                     />
-                  ) : (
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <Upload className="w-8 h-8 mb-4 text-muted-foreground" />
-                      <p className="mb-2 text-sm text-muted-foreground">
-                        <span className="font-semibold">Click to upload</span> or drag & drop
-                      </p>
-                      <p className="text-xs text-muted-foreground/80">
-                        {index < 2 ? `Photo of you or a friend` : `Photo of a potential guy friend`}
-                      </p>
-                    </div>
+                  </label>
+                  {files[key].preview && (
+                     <Button variant="destructive" size="icon" className="absolute -top-2 -right-2 rounded-full h-7 w-7 z-10" onClick={() => removeFile(key)} disabled={isLoading}>
+                       <X className="h-4 w-4" />
+                     </Button>
                   )}
-                  <input
-                    id={key}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => handleFileChange(e, key)}
-                  />
-                </label>
-                {files[key].preview && (
-                   <Button variant="destructive" size="icon" className="absolute -top-2 -right-2 rounded-full h-7 w-7 z-10" onClick={() => removeFile(key)}>
-                     <X className="h-4 w-4" />
-                   </Button>
-                )}
-              </div>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
 
-          <Button
-            size="lg"
-            className="mt-8 w-full font-bold text-lg tracking-wider transform hover:scale-105 transition-transform duration-300"
-            onClick={handleSubmit}
-            disabled={!isFormComplete || isLoading}
-          >
-            <Users className="mr-2" />
-            Find My Useless Friend!
-          </Button>
-        </CardContent>
-      </Card>
+            <Button
+              size="lg"
+              className="mt-8 w-full font-bold text-lg tracking-wider transform hover:scale-105 transition-transform duration-300"
+              onClick={handleSubmit}
+              disabled={!isFormComplete || isLoading}
+            >
+              <Users className="mr-2" />
+              Find My Useless Friend!
+            </Button>
+          </CardContent>
+        </Card>
+        
+        <div className="flex items-center justify-center">
+            {result ? (
+                <MatchResultCard result={result} onReset={resetForm} />
+            ) : (
+                <Card className="w-full h-full flex flex-col items-center justify-center p-6 bg-card/70 backdrop-blur-lg shadow-2xl border-primary/20 min-h-[300px]">
+                    <Dices className="h-16 w-16 text-muted-foreground/50" />
+                    <p className="mt-4 text-muted-foreground">Your match results will appear here!</p>
+                </Card>
+            )}
+        </div>
+      </div>
     </div>
   );
 }
