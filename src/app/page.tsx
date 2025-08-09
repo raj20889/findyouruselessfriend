@@ -147,10 +147,10 @@ export default function HomePage() {
     <div className="container mx-auto flex flex-col items-center p-4 text-center">
       <div className="mt-8">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-primary">
-          Useless Friend & Couple Finder
+          Find Your Useless Friend
         </h1>
-        <p className="mt-2 text-lg text-muted-foreground">
-          Assemble the squad. Get one useless friend and one cute couple. Trust us bro.
+        <p className="mt-2 text-lg text-muted-foreground max-w-2xl">
+          Upload some photos, choose a theme, and let our highly advanced, totally serious AI find the perfect match. What could possibly go wrong?
         </p>
       </div>
 
