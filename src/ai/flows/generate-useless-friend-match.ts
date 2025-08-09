@@ -9,7 +9,6 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import {generateCombinedImage, type GenerateCombinedImageInput} from './generate-combined-image';
 
 const GenerateUselessFriendMatchInputSchema = z.object({
   image1DataUri: z
@@ -43,7 +42,6 @@ const GenerateUselessFriendMatchOutputSchema = z.object({
     index2: z.number().describe('The index (1, 2, or 3) of the second person in the beautiful couple.'),
     reason: z.string().describe("A sweet and funny reason why these two look beautiful together."),
   }),
-  combinedImageUri: z.string().describe('A data URI of the combined image of the three people.'),
 });
 export type GenerateUselessFriendMatchOutput = z.infer<typeof GenerateUselessFriendMatchOutputSchema>;
 
@@ -92,19 +90,12 @@ const generateUselessFriendMatchFlow = ai.defineFlow(
     outputSchema: GenerateUselessFriendMatchOutputSchema,
   },
   async input => {
-    // Generate the analysis and the combined image in parallel.
-    const [matchResult, combinedImage] = await Promise.all([
-      prompt(input),
-      generateCombinedImage(input as GenerateCombinedImageInput),
-    ]);
+    const matchResult = await prompt(input);
 
     if (!matchResult.output) {
       throw new Error('Failed to generate match result');
     }
 
-    return {
-      ...matchResult.output,
-      combinedImageUri: combinedImage.imageDataUri,
-    };
+    return matchResult.output;
   }
 );

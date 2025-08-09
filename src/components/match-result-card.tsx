@@ -46,15 +46,6 @@ export function MatchResultCard({ result, onReset, filePreviews }: MatchResultCa
           {/* Beautiful Couple Section */}
           <div className="w-full p-4 rounded-lg bg-muted/50 border border-border flex flex-col items-center justify-start">
               <h3 className="flex items-center justify-center text-2xl font-bold mb-3 gap-2"><Heart className="text-primary"/> Cutest Couple</h3>
-               <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-lg border-4 border-primary/50 mb-4">
-                  <Image
-                      src={result.combinedImageUri}
-                      alt="Combined friend match"
-                      layout="fill"
-                      objectFit="cover"
-                      unoptimized
-                  />
-              </div>
               <p className="text-muted-foreground text-lg italic mb-4">
                 "{beautifulCouple.reason}"
               </p>
