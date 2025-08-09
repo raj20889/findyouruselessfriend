@@ -58,6 +58,10 @@ export default function BoysPage() {
   const isFormComplete = useMemo(() => {
     return Object.values(files).every((f) => f.file);
   }, [files]);
+  
+  const filePreviews = useMemo(() => {
+    return [files.file1.preview, files.file2.preview, files.file3.preview];
+  }, [files]);
 
   const fileToDataUri = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -72,7 +76,7 @@ export default function BoysPage() {
     if (!isFormComplete) {
       toast({
         title: "Missing Photos!",
-        description: "Please upload all three photos to find your useless friend.",
+        description: "Please upload all three photos to get the analysis.",
         variant: "destructive",
       });
       return;
@@ -124,24 +128,32 @@ export default function BoysPage() {
     return (
       <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm">
         <Dices className="h-16 w-16 animate-spin text-primary" />
-        <h2 className="mt-4 text-2xl font-bold">Analyzing Uselessness...</h2>
+        <h2 className="mt-4 text-2xl font-bold">Analyzing the Squad...</h2>
         <p className="mt-2 text-lg text-muted-foreground animate-pulse">{loadingJoke}</p>
       </div>
     );
+  }
+  
+  if (result) {
+    return (
+        <div className="container mx-auto flex flex-col items-center p-4 text-center">
+            <MatchResultCard result={result} onReset={resetForm} filePreviews={filePreviews} />
+        </div>
+    )
   }
 
   return (
     <div className="container mx-auto flex flex-col items-center p-4 text-center">
       <div className="mt-8">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-          Find Your Useless Bro
+          Useless Friend & Couple Finder
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Assemble the squad. It's time for some useless adventures.
+          Assemble the squad. Get one useless friend and one cute couple. Trust us bro.
         </p>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl">
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-1 gap-8 w-full max-w-4xl">
         <Card className="w-full p-6 bg-card/70 backdrop-blur-lg shadow-2xl border-primary/20">
           <CardContent className="p-0">
              <div className="flex flex-col items-center gap-2 mb-8">
@@ -167,10 +179,10 @@ export default function BoysPage() {
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         <Upload className="w-8 h-8 mb-4 text-muted-foreground" />
                         <p className="mb-2 text-sm text-muted-foreground">
-                          <span className="font-semibold">Click to upload</span>
+                          <span className="font-semibold">Upload Photo {index+1}</span>
                         </p>
                         <p className="text-xs text-muted-foreground/80 px-1">
-                          {index < 2 ? `Photo of you or a bro` : `Photo of a potential girl friend`}
+                          {index < 2 ? `You or a bro` : `A potential girl friend`}
                         </p>
                       </div>
                     )}
@@ -199,21 +211,10 @@ export default function BoysPage() {
               disabled={!isFormComplete || isLoading}
             >
               <Users className="mr-2" />
-              Find My Useless Friend!
+              Analyze The Squad!
             </Button>
           </CardContent>
         </Card>
-        
-        <div className="flex items-center justify-center">
-            {result ? (
-                <MatchResultCard result={result} onReset={resetForm} />
-            ) : (
-                <Card className="w-full h-full flex flex-col items-center justify-center p-6 bg-card/70 backdrop-blur-lg shadow-2xl border-primary/20 min-h-[300px]">
-                    <Dices className="h-16 w-16 text-muted-foreground/50" />
-                    <p className="mt-4 text-muted-foreground">Your match results will appear here!</p>
-                </Card>
-            )}
-        </div>
       </div>
     </div>
   );

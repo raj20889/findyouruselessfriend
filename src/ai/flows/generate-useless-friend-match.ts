@@ -31,11 +31,15 @@ const GenerateUselessFriendMatchInputSchema = z.object({
 export type GenerateUselessFriendMatchInput = z.infer<typeof GenerateUselessFriendMatchInputSchema>;
 
 const GenerateUselessFriendMatchOutputSchema = z.object({
-  name: z.string().describe('A randomly generated name for the useless friend match.'),
-  compatibilityPercentage: z
-    .number()
-    .describe('A useless compatibility percentage for the match.'),
-  memeUrl: z.string().describe('A URL for a meme/GIF reaction to make it hilarious.'),
+  uselessFriend: z.object({
+    index: z.number().describe('The index (1, 2, or 3) of the person deemed most "useless" in a funny way.'),
+    reason: z.string().describe("A funny, sassy reason why this person is the useless friend."),
+  }),
+  beautifulCouple: z.object({
+    index1: z.number().describe('The index (1, 2, or 3) of the first person in the beautiful couple.'),
+    index2: z.number().describe('The index (1, 2, or 3) of the second person in the beautiful couple.'),
+    reason: z.string().describe("A sweet and funny reason why these two look beautiful together."),
+  }),
   combinedImageUri: z.string().describe('A data URI of the combined image of the three people.'),
 });
 export type GenerateUselessFriendMatchOutput = z.infer<typeof GenerateUselessFriendMatchOutputSchema>;
@@ -50,20 +54,17 @@ const prompt = ai.definePrompt({
   name: 'generateUselessFriendMatchPrompt',
   input: {schema: GenerateUselessFriendMatchInputSchema},
   output: {schema: GenerateUselessFriendMatchOutputSchema},
-  prompt: `You are a funny AI that generates useless friend matches based on uploaded images.
+  prompt: `You are a funny, sassy AI that analyzes three photos of people to determine who the "useless friend" is and which two would make a "beautiful couple".
 
-  Generate a random name, a useless compatibility percentage, and find a funny meme/GIF reaction.
+Image 1: {{media url=image1DataUri}}
+Image 2: {{media url=image2DataUri}}
+Image 3: {{media url=image3DataUri}}
 
-  Image 1: {{media url=image1DataUri}}
-  Image 2: {{media url=image2DataUri}}
-  Image 3: {{media url=image3DataUri}}
+Your tasks:
+1.  **Identify the Useless Friend:** Pick one person (1, 2, or 3) who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes. Provide a funny, one-sentence reason for your choice.
+2.  **Identify the Beautiful Couple:** From the three people, pick the two who you think look the most beautiful or cutest together. Provide a short, sweet, and slightly funny reason for your choice.
 
-  Return the results in the following JSON format:
-  {
-    "name": "Random Name",
-    "compatibilityPercentage": 73,
-    "memeUrl": "https://example.com/meme.gif"
-  }`,
+Return the results in the specified JSON format.`,
 });
 
 const generateUselessFriendMatchFlow = ai.defineFlow(
@@ -73,6 +74,7 @@ const generateUselessFriendMatchFlow = ai.defineFlow(
     outputSchema: GenerateUselessFriendMatchOutputSchema,
   },
   async input => {
+    // Generate the analysis and the combined image in parallel.
     const [matchResult, combinedImage] = await Promise.all([
       prompt(input),
       generateCombinedImage(input as GenerateCombinedImageInput),
