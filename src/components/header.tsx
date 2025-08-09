@@ -27,7 +27,7 @@ const Header = () => {
 
   const navItems = [
     { name: "Girls", theme: "girl", icon: <Heart className="h-4 w-4" />, href: "/" },
-    { name: "Boys", theme: "boy", icon: <Bot className="h-4 w-4" />, href: "/" },
+    { name: "Boys", theme: "boy", icon: <Bot className="h-4 w-4" />, href: "/boys" },
     { name: "Matches", href: "/matches", icon: <BarChart className="h-4 w-4" /> },
   ];
 
@@ -45,7 +45,7 @@ const Header = () => {
           </Link>
           <nav className="flex items-center gap-2 rounded-full border bg-muted/50 p-1">
             {navItems.map((item) => {
-              const isActive = item.href === "/" ? pathname === "/" && theme === item.theme : pathname === item.href;
+              const isActive = item.href === pathname;
               
               const handleClick = () => {
                 if (item.theme) {

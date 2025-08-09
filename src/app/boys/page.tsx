@@ -6,7 +6,7 @@ import { Sparkles, Upload, Users, Dices, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useTheme } from "@/contexts/theme-provider";
-import { getUselessFriendMatch } from "./actions";
+import { getUselessFriendMatch } from "../actions";
 import type { GenerateUselessFriendMatchOutput } from "@/ai/flows/generate-useless-friend-match";
 import { useToast } from "@/hooks/use-toast";
 import { MatchResultCard } from "@/components/match-result-card";
@@ -14,7 +14,7 @@ import { loadingJokes } from "@/lib/data";
 
 type FileValue = { file: File | null; preview: string | null };
 
-export default function GirlsPage() {
+export default function BoysPage() {
   const { setTheme } = useTheme();
   const [files, setFiles] = useState<{ [key: string]: FileValue }>({
     file1: { file: null, preview: null },
@@ -27,7 +27,7 @@ export default function GirlsPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    setTheme("girl");
+    setTheme("boy");
   }, [setTheme]);
   
   useEffect(() => {
@@ -140,10 +140,10 @@ export default function GirlsPage() {
     <div className="container mx-auto flex flex-col items-center p-4 text-center">
       <div className="mt-8">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-          Find Your Useless Friend
+          Find Your Useless Bro
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">
-          Because even useless people deserve useless friends 😂
+          Assemble the squad. It's time for some useless adventures.
         </p>
       </div>
 
@@ -151,7 +151,7 @@ export default function GirlsPage() {
         <CardContent className="p-0">
            <div className="flex flex-col items-center gap-2 mb-8">
             <Sparkles className="text-accent" />
-            <h3 className="text-xl font-semibold">It's Girls' Time to Shine!</h3>
+            <h3 className="text-xl font-semibold">The Boys Are Back In Town!</h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -176,7 +176,7 @@ export default function GirlsPage() {
                         <span className="font-semibold">Click to upload</span> or drag & drop
                       </p>
                       <p className="text-xs text-muted-foreground/80">
-                        {index < 2 ? `Photo of you or a friend` : `Photo of a potential guy friend`}
+                        {index < 2 ? `Photo of you or a bro` : `Photo of a potential girl friend`}
                       </p>
                     </div>
                   )}
