@@ -32,8 +32,8 @@ export function MatchResultCard({ result, onReset }: MatchResultCardProps) {
         
         <div className="relative w-full aspect-video rounded-lg overflow-hidden mt-4 shadow-lg border-4 border-primary/50">
           <Image
-            src={result.memeUrl}
-            alt="Funny meme reaction"
+            src={result.combinedImageUri}
+            alt="Combined friend match"
             layout="fill"
             objectFit="cover"
             unoptimized

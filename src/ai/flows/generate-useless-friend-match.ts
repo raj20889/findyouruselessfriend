@@ -9,6 +9,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {generateCombinedImage} from './generate-combined-image';
 
 const GenerateUselessFriendMatchInputSchema = z.object({
   image1DataUri: z
@@ -35,6 +36,7 @@ const GenerateUselessFriendMatchOutputSchema = z.object({
     .number()
     .describe('A useless compatibility percentage for the match.'),
   memeUrl: z.string().describe('A URL for a meme/GIF reaction to make it hilarious.'),
+  combinedImageUri: z.string().describe('A data URI of the combined image of the three people.'),
 });
 export type GenerateUselessFriendMatchOutput = z.infer<typeof GenerateUselessFriendMatchOutputSchema>;
 
@@ -71,7 +73,18 @@ const generateUselessFriendMatchFlow = ai.defineFlow(
     outputSchema: GenerateUselessFriendMatchOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    const [matchResult, combinedImage] = await Promise.all([
+      prompt(input),
+      generateCombinedImage(input),
+    ]);
+
+    if (!matchResult.output) {
+      throw new Error('Failed to generate match result');
+    }
+
+    return {
+      ...matchResult.output,
+      combinedImageUri: combinedImage.imageDataUri,
+    };
   }
 );
