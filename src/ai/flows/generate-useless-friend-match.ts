@@ -64,12 +64,12 @@ Image 3: {{media url=image3DataUri}}
 Your tasks:
 1.  **Identify the Useless Friend:**
     {{#if (eq scenario "girls-seeking-boy")}}
-    From Image 1 and Image 2 (the two girls), pick one person who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes.
+    From Image 1 and Image 2 (the two girls), pick one person who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes. The index for the useless friend must be 1 or 2.
     {{/if}}
     {{#if (eq scenario "boys-seeking-girl")}}
-    From Image 1 and Image 2 (the two boys), pick one person who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes.
+    From Image 1 and Image 2 (the two boys), pick one person who seems the most likely to be the "useless" one in a friendship trio. This is purely for fun, so be creative and humorous. Maybe they're not looking at the camera, making a silly face, or just giving off chaotic vibes. The index for the useless friend must be 1 or 2.
     {{/if}}
-    Provide a funny, one-sentence reason for your choice. The index for the useless friend must be 1 or 2.
+    Provide a funny, one-sentence reason for your choice.
 
 2.  **Identify the Beautiful Couple:**
     {{#if (eq scenario "girls-seeking-boy")}}
@@ -90,12 +90,10 @@ const generateUselessFriendMatchFlow = ai.defineFlow(
     outputSchema: GenerateUselessFriendMatchOutputSchema,
   },
   async input => {
-    const matchResult = await prompt(input);
-
-    if (!matchResult.output) {
-      throw new Error('Failed to generate match result');
+    const {output} = await prompt(input);
+    if (!output) {
+      throw new Error('AI failed to generate a response.');
     }
-
-    return matchResult.output;
+    return output;
   }
 );

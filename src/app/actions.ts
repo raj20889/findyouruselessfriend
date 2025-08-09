@@ -21,7 +21,7 @@ export async function getUselessFriendMatch(
     // It's better to return a generic error message to the client
     return {
       success: false,
-      error: "The AI is being particularly useless right now. Please try again.",
+      error: "The AI failed to respond. This is likely due to an invalid API key or API restrictions. Please check your key and try again.",
     };
   }
 }
