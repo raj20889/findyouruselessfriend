@@ -9,7 +9,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import {generateCombinedImage} from './generate-combined-image';
+import {generateCombinedImage, type GenerateCombinedImageInput} from './generate-combined-image';
 
 const GenerateUselessFriendMatchInputSchema = z.object({
   image1DataUri: z
@@ -75,7 +75,7 @@ const generateUselessFriendMatchFlow = ai.defineFlow(
   async input => {
     const [matchResult, combinedImage] = await Promise.all([
       prompt(input),
-      generateCombinedImage(input),
+      generateCombinedImage(input as GenerateCombinedImageInput),
     ]);
 
     if (!matchResult.output) {
