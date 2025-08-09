@@ -1,18 +1,8 @@
-"use client";
-
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, Vote, HeartPulse, Sliders } from 'lucide-react';
+import { HeartPulse, Sliders, Vote } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-
-const boysCount = 1337;
-const girlsCount = 9001;
-const totalUsers = boysCount + girlsCount;
-
-const data = [
-  { name: 'Girls', value: girlsCount, color: "hsl(var(--chart-1))" },
-  { name: 'Boys', value: boysCount, color: "hsl(var(--chart-2))"  },
-];
+import { getMatchCounts } from '@/services/match-service';
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value }: any) => {
@@ -28,7 +18,16 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, val
 };
 
 
-export default function MatchesPage() {
+export default async function MatchesPage() {
+  const counts = await getMatchCounts();
+  const boysCount = counts.boys;
+  const girlsCount = counts.girls;
+
+  const data = [
+    { name: 'Girls', value: girlsCount, color: "hsl(var(--chart-1))" },
+    { name: 'Boys', value: boysCount, color: "hsl(var(--chart-2))"  },
+  ];
+
 
   return (
     <div className="container mx-auto p-4 md:p-8 animate-in fade-in-50 duration-500">
@@ -83,7 +82,7 @@ export default function MatchesPage() {
         <Card className="bg-card/70 backdrop-blur-lg flex flex-col justify-center items-center p-8 text-center">
             <h3 className="text-2xl font-bold">The Verdict Is In...</h3>
             <p className="text-4xl md:text-5xl font-bold my-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-                {girlsCount > boysCount ? "Girls are winning!" : "Boys are winning!"}
+                {girlsCount > boysCount ? "Girls are winning!" : (boysCount > girlsCount ? "Boys are winning!" : "It's a tie!")}
             </p>
             <p className="text-muted-foreground">
                 With a staggering {Math.max(girlsCount, boysCount)} users, they are clearly more dedicated to the art of uselessness. Science has spoken.

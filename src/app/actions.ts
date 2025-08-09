@@ -5,6 +5,7 @@ import {
   type GenerateUselessFriendMatchInput,
 } from "@/ai/flows/generate-useless-friend-match";
 import type { GenerateUselessFriendMatchOutput } from "@/ai/flows/generate-useless-friend-match";
+import { incrementMatchCount } from "@/services/match-service";
 
 type ActionResult = 
   | { success: true; data: GenerateUselessFriendMatchOutput }
@@ -30,13 +31,16 @@ const createMockResponse = (scenario: 'girls-seeking-boy' | 'boys-seeking-girl')
 export async function getUselessFriendMatch(
   input: GenerateUselessFriendMatchInput
 ): Promise<ActionResult> {
+  let result;
   try {
-    const result = await generateUselessFriendMatch(input);
+    result = await generateUselessFriendMatch(input);
+    await incrementMatchCount(input.scenario);
     return { success: true, data: result };
   } catch (error) {
     console.error("AI call failed, returning mock data. Error:", error);
     // Return a mock response so the app can continue without a real AI call.
-    const mockData = createMockResponse(input.scenario);
-    return { success: true, data: mockData };
+    result = createMockResponse(input.scenario);
+    await incrementMatchCount(input.scenario);
+    return { success: true, data: result };
   }
 }
