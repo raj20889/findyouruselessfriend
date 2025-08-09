@@ -11,7 +11,7 @@ export default {
     extend: {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
-        spacegrotesk: ['"Space Grotesk"', 'sans-serif'],
+        'space-grotesk': ['"Space Grotesk"', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

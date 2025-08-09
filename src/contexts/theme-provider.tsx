@@ -29,11 +29,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const body = window.document.body;
 
     root.classList.remove("dark", "light", "theme-boy", "theme-girl");
-    body.classList.remove("font-spacegrotesk", "font-poppins");
+    body.classList.remove("font-space-grotesk", "font-poppins");
 
     if (theme === "boy") {
       root.classList.add("dark", "theme-boy");
-      body.classList.add("font-spacegrotesk");
+      body.classList.add("font-space-grotesk");
     } else {
       root.classList.add("light", "theme-girl");
       body.classList.add("font-poppins");
